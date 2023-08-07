@@ -1,0 +1,53 @@
+/* 
+  Localizable.strings
+  OnTheMap
+
+  Created by Guido Roos on 01/08/2023.
+  
+*/
+
+//generic
+"app_title" = "On The Map";
+"no_data_returned" = "No data was found for this request";
+"unkown_error" = "An unknown error occurred";
+"userlocation_not_exist" = "No user location found to update";
+"cancel_button_text" = "Cancel";
+"ok_button_text" = "OK";
+"retry_button_text" = "Retry";
+
+//login screen
+"login_label" = "Login to Udacity";
+"email_label" = "Email";
+"password_label" = "Password";
+"login_button_text" = "Login";
+"no_account_label" = "Don't have an account? Sign Up";
+"login_failure_title" = "Login did not succeed";
+
+
+//overview screen
+"map_icon_text" = "Map";
+"list_icon_text" = "List";
+"overwrite_location_warning" = "You have already posted a student location,\n Would you like to overwrite your current location?";
+"overwrite_button_text" = "Overwrite";
+"get_locations_failure_title" = "Could not fetch user locations";
+"logout_confirmation_title" = "Logout confirmation";
+"logout_confirmation_message" = "Are you sure you want to logout?";
+
+
+//save location screen
+"save_location_title_p1" = "Where are you";
+"save_location_title_p2" = "Studying";
+"save_location_title_p3" = "Today";
+"enter_location_label" = "Enter your location here";
+"find_location_button_text" = "Find on the map";
+
+//share location screen
+"share_label" = "Enter a link to share here";
+"submit_button_text" = "Submit";
+"continue_button_text" = "Continue";
+"save_location_failed_title" = "Location was not saved";
+"save_location_success_title" = "Location was saved successfuly!";
+
+
+
+
