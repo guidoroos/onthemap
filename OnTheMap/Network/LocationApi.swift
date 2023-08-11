@@ -8,18 +8,17 @@
 import Foundation
 
 class LocationApi: ApiClient {
-    
     enum Endpoint {
-        case getUserData(ID:String)
+        case getUserData(ID: String)
         case studentLocation
-        case putStudentLocation (ID: String)
+        case putStudentLocation(ID: String)
         case filteredStudentLocation(limit: Int?, skip: Int?, order: String?, uniqueKey: String?)
 
         var stringValue: String {
             switch self {
             case let .getUserData(ID):
-                return ApiClient.baseURL + "/users/" + ID
-                
+                return ApiClient.baseURL + "users/" + ID
+
             case .studentLocation:
                 return ApiClient.baseURL + "StudentLocation"
             case let .putStudentLocation(ID):
@@ -80,24 +79,25 @@ class LocationApi: ApiClient {
             verb: .post
         )
     }
-    
+
     class func putUserLocation(
         userLocation: UserLocationRequest
     ) async throws -> PutUserLocationResponse {
         guard let ID = userLocation.uniqueKey else {
             throw APIError.invalidRequest(description: NSLocalizedString("userlocation_not_exist", comment: ""))
         }
-        
+
         return try await taskForRequest(
             url: getUrl(urlString: Endpoint.putStudentLocation(ID: ID).stringValue),
             requestBody: userLocation,
             verb: .put
         )
     }
-    
-    class func getUserData(ID: String) async throws -> UserDataResponse {
-        return try await taskForGetRequest(url: getUrl(urlString: Endpoint.getUserData(ID: ID).stringValue)
+
+    class func getUserData(ID: String) async throws -> User {
+        return try await taskForGetRequest(
+            url: getUrl(urlString: Endpoint.getUserData(ID: ID).stringValue),
+            shouldCleanData: true
         )
     }
-
 }

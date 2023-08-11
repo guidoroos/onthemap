@@ -50,17 +50,9 @@ class ListViewController: OverviewViewController, UITableViewDelegate, UITableVi
 
         super.getUserLocations {
             // on completion
-            self.data = super.userLocations.sorted(by: { let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            self.data = StudentsData.sharedInstance().students
                 
-                guard let date1 = dateFormatter.date(from: $0.updatedAt!),
-                          let date2 = dateFormatter.date(from: $1.updatedAt!) else {
-                        return false
-                    }
-                   
-                    return date1 < date2
-                }
-            )
+        
             self.tableView.reloadData()
         }
     }

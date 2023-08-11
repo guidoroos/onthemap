@@ -27,7 +27,9 @@ class ShareLinkViewController: SetPinFlowViewController {
         super.viewDidLoad()
         setupUI()
         if !locationString.isEmpty {
+            spinner?.startAnimating()
             findLocation(value: locationString)
+            spinner?.stopAnimating()
         }
     }
 
@@ -39,6 +41,7 @@ class ShareLinkViewController: SetPinFlowViewController {
 
             do {
                 let postUserLocationResponse = try await LocationApi.postUserLocation(userLocation: request)
+                print (postUserLocationResponse)
                 
                 spinner?.stopAnimating()
                 
@@ -46,9 +49,7 @@ class ShareLinkViewController: SetPinFlowViewController {
                     title: NSLocalizedString("save_location_success_title", comment: ""),
                     message: "",
                     action: {
-                        Task {
                             self.navigateBackToOverview()
-                        }
                     }
                 )
 
@@ -98,13 +99,13 @@ class ShareLinkViewController: SetPinFlowViewController {
 
     private func getPersonalData() async throws -> User {
         guard let key = ApiClient.account?.key else {
-            // Handle the case where account or key is nil
+          
             throw APIError.invalidRequest(description: "no user id found")
         }
 
         do {
             let data = try await LocationApi.getUserData(ID: key)
-            return data.user ?? User()
+            return data
         } catch {
             let apiError = (error as? APIError)
             let description = apiError?.description ?? NSLocalizedString("unkown_error", comment: "")
@@ -120,7 +121,10 @@ class ShareLinkViewController: SetPinFlowViewController {
 
         geocoder.geocodeAddressString(value) { placemarks, _ in
             guard let placemark = placemarks?.first, let location = placemark.location else {
-                // Handle error
+                let alert = OneButtonAlert.create(
+                    title: NSLocalizedString("geocoding_failed", comment: ""),
+                    message: ""
+                )
                 return
             }
 
@@ -154,11 +158,9 @@ class ShareLinkViewController: SetPinFlowViewController {
         if let navigationController = navigationController {
             for viewController in navigationController.viewControllers {
                 if let mapViewController = viewController as? MapViewController {
-                    // Pop to the destination view controller
                     navigationController.popToViewController(mapViewController, animated: true)
                     break
                 } else if let listViewController = viewController as? ListViewController {
-                    // Pop to the destination view controller
                     navigationController.popToViewController(listViewController, animated: true)
                     break
                 }

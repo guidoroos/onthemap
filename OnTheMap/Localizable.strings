@@ -41,12 +41,14 @@
 "enter_location_label" = "Enter your location here";
 "find_location_button_text" = "Find on the map";
 
-//share location screen
+//share link screen
 "share_label" = "Enter a link to share here";
 "submit_button_text" = "Submit";
 "continue_button_text" = "Continue";
 "save_location_failed_title" = "Location was not saved";
 "save_location_success_title" = "Location was saved successfuly!";
+"geocoding_failed" = "Something went wrong locating your location";
+
 
 
 

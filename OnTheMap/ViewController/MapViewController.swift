@@ -18,14 +18,17 @@ class MapViewController: OverviewViewController, MKMapViewDelegate {
         
         super.getUserLocations {
             //on completion
+            self.spinner?.startAnimating()
             self.setupUserLocations()
+            self.spinner?.stopAnimating()
         }
     }
     
     func setupUserLocations() {
         var annotations = [MKPointAnnotation]()
         
-        for loc in userLocations {
+        
+        for loc in StudentsData.sharedInstance().students {
             guard let latitude = loc.latitude,
                   let longitude = loc.longitude,
                   let firstName = loc.firstName,

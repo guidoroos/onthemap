@@ -7,6 +7,8 @@
 
 import Foundation
 
+
+
 struct UserLocationResponse: Codable {
     var results: [UserLocation]
 }
@@ -34,4 +36,17 @@ struct UserLocation: Codable {
             return "unknown"
         }
     }
+}
+
+class StudentsData: NSObject {
+    
+    var students = [UserLocation]()
+    
+    class func sharedInstance() -> StudentsData {
+        struct Singleton {
+            static var sharedInstance = StudentsData()
+        }
+        return Singleton.sharedInstance
+    }
+    
 }

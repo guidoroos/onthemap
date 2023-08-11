@@ -85,6 +85,8 @@ public class ApiClient {
         shouldCleanData: Bool = false
     ) async throws -> ResponseType {
         let (data, response) = try await URLSession.shared.data(from: url)
+        print("response: " + response.debugDescription)
+        print ("resonsedata: " + data.debugDescription)
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError.invalidResponse(description: response.description)
@@ -133,8 +135,13 @@ public class ApiClient {
         }
 
         request.httpMethod = verb.rawValue
+        
+        print ("request: " + request.debugDescription)
 
         let (data, response) = try await URLSession.shared.data(for: request)
+        
+        print("response: " + response.debugDescription)
+        
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError.invalidResponse(description: response.description)
@@ -145,6 +152,7 @@ public class ApiClient {
             if data.isEmpty {
                 throw APIError.emptyData(description: NSLocalizedString("no_data_returned", comment: ""))
             } else {
+                
                 do {
                     let response:ResponseType
                     
@@ -158,6 +166,7 @@ public class ApiClient {
                             ResponseType.self, from: data
                         )
                     }
+                    
                     return response
                 } catch {
                     throw APIError.invalidResponse(description: "unexpected response for request")

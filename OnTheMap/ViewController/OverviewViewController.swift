@@ -12,7 +12,6 @@ class OverviewViewController: BaseViewController {
     private var editItem: UIBarButtonItem!
     private var refreshItem: UIBarButtonItem!
 
-    internal var userLocations: [UserLocation] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,8 +23,8 @@ class OverviewViewController: BaseViewController {
         editItem = UIBarButtonItem(image: UIImage(named: "icon_pin"), style: .plain, target: self, action: #selector(onTapLocationIcon))
         refreshItem = UIBarButtonItem(image: UIImage(named: "icon_refresh"), style: .plain, target: self, action: #selector(onTapUndoIcon))
 
-        navigationItem.leftBarButtonItem = editItem
-        navigationItem.rightBarButtonItem = refreshItem
+        navigationItem.rightBarButtonItem = editItem
+        navigationItem.leftBarButtonItem = refreshItem
         navigationItem.title = NSLocalizedString("app_title", comment: "")
 
         // Create the border view
@@ -106,7 +105,10 @@ class OverviewViewController: BaseViewController {
             do {
                 spinner?.startAnimating()
 
-                userLocations = try await LocationApi.getFilteredUserLocations(limit: 100).results
+                StudentsData.sharedInstance().students = try await LocationApi.getFilteredUserLocations(
+                    limit: 100,
+                    order: "-updatedAt"
+                ).results
 
                 spinner?.stopAnimating()
                 completion()
