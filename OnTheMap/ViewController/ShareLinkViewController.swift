@@ -12,8 +12,8 @@ import MapKit
 import UIKit
 
 class ShareLinkViewController: SetPinFlowViewController {
-    var locationString: String = ""
-    var location: CLLocation?
+    var placemark: CLPlacemark!
+    var location: CLLocation!
 
     @IBOutlet var shareLinkInputField: TextFieldWithPadding!
     @IBOutlet var mapView: MKMapView!
@@ -26,11 +26,7 @@ class ShareLinkViewController: SetPinFlowViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        if !locationString.isEmpty {
-            spinner?.startAnimating()
-            findLocation(value: locationString)
-            spinner?.stopAnimating()
-        }
+        setupLocation()
     }
 
     private func submitUserLocation() {
@@ -88,9 +84,9 @@ class ShareLinkViewController: SetPinFlowViewController {
 
         userLocationRequest.firstName = user?.firstName
         userLocationRequest.lastName = user?.lastName
-        userLocationRequest.latitude = location?.coordinate.latitude
-        userLocationRequest.longitude = location?.coordinate.longitude
-        userLocationRequest.mapString = locationString
+        userLocationRequest.latitude = location.coordinate.latitude
+        userLocationRequest.longitude = location.coordinate.longitude
+        userLocationRequest.mapString = location.description
         userLocationRequest.mediaURL = shareLinkInputField.text
         userLocationRequest.uniqueKey = account?.key
 
@@ -115,29 +111,17 @@ class ShareLinkViewController: SetPinFlowViewController {
             throw apiError ?? APIError.unknownError(description: "unkown_error")
         }
     }
+    
+    private func setupLocation() {
+        let mkPlacemark = MKPlacemark(placemark: placemark)
 
-    private func findLocation(value: String) {
-        let geocoder = CLGeocoder()
-
-        geocoder.geocodeAddressString(value) { placemarks, _ in
-            guard let placemark = placemarks?.first, let location = placemark.location else {
-                let alert = OneButtonAlert.create(
-                    title: NSLocalizedString("geocoding_failed", comment: ""),
-                    message: ""
-                )
-                return
-            }
-
-            self.location = location
-            let mkPlacemark = MKPlacemark(placemark: placemark)
-
-            // Add the placemark as an annotation to the map view
-            DispatchQueue.main.async {
-                self.mapView.addAnnotation(mkPlacemark)
-                self.mapView.showAnnotations([mkPlacemark], animated: true)
-            }
+        // Add the placemark as an annotation to the map view
+        DispatchQueue.main.async {
+            self.mapView.addAnnotation(mkPlacemark)
+            self.mapView.showAnnotations([mkPlacemark], animated: true)
         }
     }
+
 
     private func setupUI() {
         shareLinkInputField.attributedPlaceholder = NSAttributedString(

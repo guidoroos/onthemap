@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 struct UserLocationResponse: Codable {
     var results: [UserLocation]
 }
@@ -24,7 +22,7 @@ struct UserLocation: Codable {
     var objectId: String? = nil
     var uniqueKey: String? = nil
     var updatedAt: String? = nil
-    
+
     var fullName: String {
         if let firstName = firstName, let lastName = lastName {
             return "\(firstName) \(lastName)"
@@ -39,14 +37,12 @@ struct UserLocation: Codable {
 }
 
 class StudentsData: NSObject {
-    
     var students = [UserLocation]()
-    
+
     class func sharedInstance() -> StudentsData {
-        struct Singleton {
+        enum Singleton {
             static var sharedInstance = StudentsData()
         }
         return Singleton.sharedInstance
     }
-    
 }
